@@ -29,7 +29,7 @@ python scripts/verify-public-source.py
 gitleaks dir . --redact
 ```
 
-GatewayとBrokerはそれぞれ`./gradlew :pc-gateway:run`、`./gradlew :broker:run`で起動できます。環境変数による設定が必要です。AndroidのBroker接続先は`-Prelay.broker.endpoint=https://<運用者のドメイン>`で指定し、デフォルトでは無効です。地域設定の例は`config/region-profile.example.json`にあります。秘密鍵、認証情報、署名鍵、実環境の設定をリポジトリへ保存しないでください。
+GatewayとBrokerはそれぞれ`./gradlew :pc-gateway:run`、`./gradlew :broker:run`で起動できます。環境変数による設定が必要です。AndroidのBroker接続先は`-Prelay.broker.endpoint=https://<運用者のドメイン>`で指定し、デフォルトでは無効です。地域設定の例は`config/region-profile.example.json`にあります。
 
 ## ライセンス
 
