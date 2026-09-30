@@ -1,0 +1,56 @@
+services:
+  broker:
+    build:
+      context: .
+      dockerfile: docker/broker.Dockerfile
+    environment:
+      RELAY_BROKER_PROFILE: development
+      RELAY_BROKER_HOST: 0.0.0.0
+      RELAY_BROKER_PORT: "8443"
+      RELAY_BROKER_DB_PATH: /var/lib/relay/broker.db
+    volumes:
+      - relay-broker-data:/var/lib/relay
+    ports:
+      - "127.0.0.1:18443:8443"
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://broker:8443
+    depends_on:
+      - broker
+    restart: unless-stopped
+
+  pc-gateway:
+    build:
+      context: .
+      dockerfile: docker/pc-gateway.Dockerfile
+    depends_on:
+      - broker
+    environment:
+      RELAY_PROFILE: development
+      # The launcher validates and supplies these immediately before `up`. Defaults keep
+      # `docker compose logs cloudflared` usable before a credential has been issued.
+      RELAY_GATEWAY_ID: ${RELAY_GATEWAY_ID:-}
+      RELAY_SHELTER_ID: ${RELAY_SHELTER_ID:-}
+      RELAY_BROKER_URL: ${RELAY_BROKER_URL:-}
+      RELAY_BROKER_CREDENTIAL: ${RELAY_BROKER_CREDENTIAL:-}
+      RELAY_GATEWAY_HOST: 0.0.0.0
+      RELAY_GATEWAY_PORT: "8080"
+      RELAY_GATEWAY_PUBLIC_PORT: "8080"
+      RELAY_GATEWAY_PUBLIC_SCHEME: http
+      RELAY_GATEWAY_LAN_MODE: ${RELAY_GATEWAY_LAN_MODE:-disabled}
+      RELAY_GATEWAY_LAN_DISCOVERY: ${RELAY_GATEWAY_LAN_DISCOVERY:-false}
+      RELAY_GATEWAY_ANONYMOUS_INGRESS: ${RELAY_GATEWAY_ANONYMOUS_INGRESS:-false}
+      RELAY_GATEWAY_DOCKER_LOCAL_OPERATOR: ${RELAY_GATEWAY_DOCKER_LOCAL_OPERATOR:-false}
+      RELAY_GATEWAY_DB: /relay-state/relay-gateway.db
+      RELAY_RESCUE_KEY_FILE: /relay-state/rescue-keys.json
+      RELAY_BLE_BRIDGE_SECRET_FILE: /relay-state/ble-bridge.key
+    volumes:
+      - ${RELAY_POC_STATE_ROOT:-C:/tmp/relay-broker-poc}:/relay-state
+    ports:
+      - "${RELAY_GATEWAY_BIND_ADDRESS:-127.0.0.1}:8080:8080"
+    restart: unless-stopped
+
+volumes:
+  relay-broker-data:

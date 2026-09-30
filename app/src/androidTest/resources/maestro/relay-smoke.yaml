@@ -1,0 +1,7 @@
+appId: com.example.relay
+---
+- launchApp
+- assertVisible: "Relay"
+- tapOn:
+    text: ".*救助.*"
+- pressKey: BACK

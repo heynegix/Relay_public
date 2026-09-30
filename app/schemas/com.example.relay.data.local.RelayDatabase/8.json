@@ -1,0 +1,548 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 8,
+    "identityHash": "0830a344a9c9cfd7184d16137e9896b5",
+    "entities": [
+      {
+        "tableName": "messages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`messageId` TEXT NOT NULL, `messageType` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `expiresAt` INTEGER NOT NULL, `priority` TEXT NOT NULL, `originDeviceId` TEXT NOT NULL, `payloadJson` TEXT NOT NULL, `hopCount` INTEGER NOT NULL, `maxHopCount` INTEGER NOT NULL, `status` TEXT NOT NULL, `receivedAt` INTEGER NOT NULL, `recordType` TEXT NOT NULL, `lifetimeMs` INTEGER NOT NULL, `accumulatedAgeMs` INTEGER NOT NULL, `receivedElapsedRealtimeMs` INTEGER NOT NULL, `persistedAtWallClockMs` INTEGER NOT NULL, `elapsedRealtimeSessionId` TEXT NOT NULL, `reportSignatureJson` TEXT, PRIMARY KEY(`messageId`))",
+        "fields": [
+          {
+            "fieldPath": "messageId",
+            "columnName": "messageId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "messageType",
+            "columnName": "messageType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiresAt",
+            "columnName": "expiresAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originDeviceId",
+            "columnName": "originDeviceId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payloadJson",
+            "columnName": "payloadJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hopCount",
+            "columnName": "hopCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxHopCount",
+            "columnName": "maxHopCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedAt",
+            "columnName": "receivedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordType",
+            "columnName": "recordType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lifetimeMs",
+            "columnName": "lifetimeMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accumulatedAgeMs",
+            "columnName": "accumulatedAgeMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedElapsedRealtimeMs",
+            "columnName": "receivedElapsedRealtimeMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "persistedAtWallClockMs",
+            "columnName": "persistedAtWallClockMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "elapsedRealtimeSessionId",
+            "columnName": "elapsedRealtimeSessionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reportSignatureJson",
+            "columnName": "reportSignatureJson",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "messageId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_messages_originDeviceId",
+            "unique": false,
+            "columnNames": [
+              "originDeviceId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_messages_originDeviceId` ON `${TABLE_NAME}` (`originDeviceId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "message_deliveries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`messageId` TEXT NOT NULL, `peerDeviceId` TEXT NOT NULL, `acknowledgedAt` INTEGER NOT NULL, `packetId` TEXT NOT NULL, PRIMARY KEY(`messageId`, `peerDeviceId`))",
+        "fields": [
+          {
+            "fieldPath": "messageId",
+            "columnName": "messageId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "peerDeviceId",
+            "columnName": "peerDeviceId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acknowledgedAt",
+            "columnName": "acknowledgedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packetId",
+            "columnName": "packetId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "messageId",
+            "peerDeviceId"
+          ]
+        }
+      },
+      {
+        "tableName": "delivery_receipts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`receiptId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `receiptType` TEXT NOT NULL, `actorId` TEXT NOT NULL, `recordedAt` INTEGER NOT NULL, PRIMARY KEY(`receiptId`))",
+        "fields": [
+          {
+            "fieldPath": "receiptId",
+            "columnName": "receiptId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "messageId",
+            "columnName": "messageId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receiptType",
+            "columnName": "receiptType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actorId",
+            "columnName": "actorId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordedAt",
+            "columnName": "recordedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "receiptId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_delivery_receipts_messageId_receiptType_actorId",
+            "unique": true,
+            "columnNames": [
+              "messageId",
+              "receiptType",
+              "actorId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_delivery_receipts_messageId_receiptType_actorId` ON `${TABLE_NAME}` (`messageId`, `receiptType`, `actorId`)"
+          },
+          {
+            "name": "index_delivery_receipts_messageId",
+            "unique": false,
+            "columnNames": [
+              "messageId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_delivery_receipts_messageId` ON `${TABLE_NAME}` (`messageId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "rescue_envelopes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`requestId` TEXT NOT NULL, `requestVersion` INTEGER NOT NULL, `envelopeId` TEXT NOT NULL, `ciphertextSha256Hex` TEXT NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `expiresAtEpochMillis` INTEGER NOT NULL, `storageSizeBytes` INTEGER NOT NULL, `envelopeJson` TEXT NOT NULL, `receivedAtEpochMillis` INTEGER NOT NULL, `submissionStatus` TEXT NOT NULL, `submissionCount` INTEGER NOT NULL, `signedReceiptJson` TEXT, PRIMARY KEY(`requestId`, `requestVersion`))",
+        "fields": [
+          {
+            "fieldPath": "requestId",
+            "columnName": "requestId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requestVersion",
+            "columnName": "requestVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "envelopeId",
+            "columnName": "envelopeId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ciphertextSha256Hex",
+            "columnName": "ciphertextSha256Hex",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiresAtEpochMillis",
+            "columnName": "expiresAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "storageSizeBytes",
+            "columnName": "storageSizeBytes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "envelopeJson",
+            "columnName": "envelopeJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedAtEpochMillis",
+            "columnName": "receivedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "submissionStatus",
+            "columnName": "submissionStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "submissionCount",
+            "columnName": "submissionCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signedReceiptJson",
+            "columnName": "signedReceiptJson",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "requestId",
+            "requestVersion"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_rescue_envelopes_expiresAtEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "expiresAtEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rescue_envelopes_expiresAtEpochMillis` ON `${TABLE_NAME}` (`expiresAtEpochMillis`)"
+          },
+          {
+            "name": "index_rescue_envelopes_submissionStatus",
+            "unique": false,
+            "columnNames": [
+              "submissionStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rescue_envelopes_submissionStatus` ON `${TABLE_NAME}` (`submissionStatus`)"
+          }
+        ]
+      },
+      {
+        "tableName": "broker_ledger",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`requestId` TEXT NOT NULL, `requestVersion` INTEGER NOT NULL, `brokerReceiptId` TEXT, `brokerStatus` TEXT NOT NULL, `uploadedAtEpochMillis` INTEGER, `retryCount` INTEGER NOT NULL, PRIMARY KEY(`requestId`, `requestVersion`))",
+        "fields": [
+          {
+            "fieldPath": "requestId",
+            "columnName": "requestId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requestVersion",
+            "columnName": "requestVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brokerReceiptId",
+            "columnName": "brokerReceiptId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "brokerStatus",
+            "columnName": "brokerStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uploadedAtEpochMillis",
+            "columnName": "uploadedAtEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "retryCount",
+            "columnName": "retryCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "requestId",
+            "requestVersion"
+          ]
+        }
+      },
+      {
+        "tableName": "regional_shelter_directories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`regionId` TEXT NOT NULL, `generation` INTEGER NOT NULL, `directoryDigest` TEXT NOT NULL, `directoryJson` TEXT NOT NULL, `acceptedAtEpochMillis` INTEGER NOT NULL, PRIMARY KEY(`regionId`))",
+        "fields": [
+          {
+            "fieldPath": "regionId",
+            "columnName": "regionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "generation",
+            "columnName": "generation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "directoryDigest",
+            "columnName": "directoryDigest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "directoryJson",
+            "columnName": "directoryJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acceptedAtEpochMillis",
+            "columnName": "acceptedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "regionId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_regional_shelter_directories_generation",
+            "unique": false,
+            "columnNames": [
+              "generation"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_regional_shelter_directories_generation` ON `${TABLE_NAME}` (`generation`)"
+          }
+        ]
+      },
+      {
+        "tableName": "active_rescue_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`requestId` TEXT NOT NULL, `latestVersion` INTEGER NOT NULL, `sealedRecoveryPayload` BLOB NOT NULL, `recoveryNonce` BLOB NOT NULL, `trackingMode` TEXT NOT NULL, `latestSubmissionStatus` TEXT NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, `expiresAtEpochMillis` INTEGER NOT NULL, `terminalStatus` TEXT, PRIMARY KEY(`requestId`))",
+        "fields": [
+          {
+            "fieldPath": "requestId",
+            "columnName": "requestId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latestVersion",
+            "columnName": "latestVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sealedRecoveryPayload",
+            "columnName": "sealedRecoveryPayload",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recoveryNonce",
+            "columnName": "recoveryNonce",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trackingMode",
+            "columnName": "trackingMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latestSubmissionStatus",
+            "columnName": "latestSubmissionStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiresAtEpochMillis",
+            "columnName": "expiresAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "terminalStatus",
+            "columnName": "terminalStatus",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "requestId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_active_rescue_sessions_updatedAtEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "updatedAtEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_active_rescue_sessions_updatedAtEpochMillis` ON `${TABLE_NAME}` (`updatedAtEpochMillis`)"
+          },
+          {
+            "name": "index_active_rescue_sessions_expiresAtEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "expiresAtEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_active_rescue_sessions_expiresAtEpochMillis` ON `${TABLE_NAME}` (`expiresAtEpochMillis`)"
+          },
+          {
+            "name": "index_active_rescue_sessions_terminalStatus",
+            "unique": false,
+            "columnNames": [
+              "terminalStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_active_rescue_sessions_terminalStatus` ON `${TABLE_NAME}` (`terminalStatus`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0830a344a9c9cfd7184d16137e9896b5')"
+    ]
+  }
+}

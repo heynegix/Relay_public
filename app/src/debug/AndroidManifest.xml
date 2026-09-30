@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- This component exists only in the debug APK and is intentionally exported
+         for a host-side Mobly/snippet process to bind to. It is never merged into
+         the release manifest. -->
+    <application
+        android:networkSecurityConfig="@xml/network_security_config_debug"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:networkSecurityConfig,android:usesCleartextTraffic">
+        <service
+            android:name=".test.RelayTestSnippetService"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="com.example.relay.debug.RELAY_TEST_SNIPPET" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>

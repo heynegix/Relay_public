@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relay 地域対応拠点</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div id="setup" class="setup" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+    <form id="setupForm" class="setup-card">
+      <div class="wordmark" aria-hidden="true">R</div>
+      <p class="eyebrow">STAFF ONLY</p>
+      <h1 id="setupTitle">Relay 地域対応拠点を開始</h1>
+      <p>対象地域は <strong>設定地域</strong> です。個人の運用者アカウントでサインインしてください。</p>
+      <label>利用者名<input id="staffUsername" type="text" required autocomplete="username" maxlength="64"></label>
+      <label>パスワード<input id="staffPassword" type="password" required autocomplete="current-password"></label>
+      <button class="button primary" type="submit">運用画面を開く</button>
+      <p class="fine">パスワードはブラウザへ保存されません。初回管理者はローカルの一回限りbootstrapで作成します。</p>
+    </form>
+  </div>
+
+  <div id="criticalAlert" class="critical-alert hidden" role="alertdialog" aria-modal="true">
+    <div class="critical-card">
+      <p class="eyebrow">最優先</p>
+      <h2>命の危険があるSOSを受信</h2>
+      <p id="criticalSummary"></p>
+      <button id="ackCritical" class="button danger" type="button">確認して担当を開始</button>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand"><span class="wordmark small" aria-hidden="true">R</span><div><h1>Relay 救助拠点</h1><p id="regionName">設定地域</p></div></div>
+    <div class="header-status"><span id="connectionDot" class="dot"></span><span id="connectionLabel">接続確認中</span><span id="modeLabel" class="mode-chip"></span><span id="staffNodeLabel"></span><button id="lockButton" class="button quiet" type="button">ロック</button></div>
+  </header>
+
+  <aside id="officialAlert" class="official-alert">公式情報を確認中です</aside>
+
+  <nav class="tabs" aria-label="主要画面">
+    <button class="tab active" data-panel="rescue" type="button">救助依頼 <span id="requestCount" class="count">0</span></button>
+    <button class="tab" data-panel="map" type="button">地図</button>
+    <button class="tab" data-panel="official" type="button">公式情報</button>
+    <button class="tab" data-panel="review" type="button">確認候補</button>
+    <button class="tab" data-panel="settings" type="button">初期設定</button>
+  </nav>
+
+  <main>
+    <section id="panel-rescue" class="panel active">
+      <div class="rescue-layout">
+        <section class="request-column" aria-labelledby="requestHeading">
+          <div class="section-head"><div><p class="eyebrow">REQUESTS</p><h2 id="requestHeading">救助依頼</h2></div><button id="refreshButton" class="button quiet" type="button">更新</button></div>
+          <div class="filters" role="group" aria-label="救助依頼の絞り込み">
+            <button class="filter active" data-filter="active" type="button">未完了</button>
+            <button class="filter" data-filter="all" type="button">すべて</button>
+          </div>
+          <div id="requestList" class="request-list" aria-live="polite"></div>
+        </section>
+        <section class="map-column" aria-labelledby="mapHeading">
+          <div class="section-head"><div><p class="eyebrow">LOCATION</p><h2 id="mapHeading">地域対応地図</h2></div><span id="mapStatus" class="status-chip">地図確認中</span></div>
+          <div id="rescueMap" class="tile-map" aria-label="設定された地域の地図と救助依頼位置。ボタン、マウスホイール、ピンチ、矢印キーで操作できます"></div>
+          <p class="attribution">出典：国土地理院「地理院タイル（標準地図）」</p>
+          <div id="selectedDetail" class="detail-card"><p class="empty">左の依頼を選ぶと、正確な位置と状況を表示します。</p></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="panel-map" class="panel">
+      <div class="wide-card">
+        <div class="section-head"><div><p class="eyebrow">OFFLINE MAP</p><h2>地域対応オフライン地図</h2></div><button id="prepareMap" class="button primary" type="button">地図をダウンロード</button></div>
+        <p>縮尺13〜15の設定地域周辺をPCへ保存します。災害時にインターネットが切れても、保存済みタイルだけで縮尺18まで拡大できます。ボタン、マウスホイール、ダブルクリック、ピンチ、ドラッグ、キーボードに対応しています。</p>
+        <progress id="mapProgress" max="1" value="0"></progress><p id="mapProgressLabel" class="fine"></p>
+        <div id="fullMap" class="tile-map large" aria-label="設定地域オフライン地図。ボタン、マウスホイール、ピンチ、矢印キーで操作できます"></div>
+        <p class="attribution">出典：国土地理院「地理院タイル（標準地図）」。利用時は国土地理院コンテンツ利用規約に従います。</p>
+      </div>
+    </section>
+
+    <section id="panel-official" class="panel">
+      <div class="wide-card">
+        <p class="eyebrow">OFFICIAL SOURCES ONLY</p><h2>地域の公式防災情報</h2>
+        <div id="warningDetail" class="warning-detail"></div>
+        <div id="officialSources" class="source-list"></div>
+      </div>
+    </section>
+
+    <section id="panel-review" class="panel">
+      <div class="wide-card settings-grid">
+        <div><p class="eyebrow">PONTE / ÉCART</p><h2>観測と要確認候補</h2><p class="fine">未確認は安否の確定を意味しません。端末観測と本人確認を区別します。</p><form id="observationForm"><label>対象トークン<input id="observationSubject" required maxlength="128"></label><label>観測種別<select id="observationType"><option>IN_PERSON_CONFIRMED</option><option>SHELTER_CHECKED_IN</option><option>VEHICLE_BOARDED</option><option>SUPPORT_NEEDED</option><option>THIRD_PARTY_REPORT</option><option>DEVICE_OBSERVED</option><option>PLACE_CONFIRMED</option></select></label><label>おおまかな場所セル<input id="observationCell" maxlength="64"></label><button class="button primary" type="submit">観測を登録</button></form></div>
+        <div><h3>CSV（訓練用）</h3><label>種類<select id="csvKind"><option value="baseline">基準対象</option><option value="observation">Observation</option><option value="profile">支援プロファイル</option></select></label><textarea id="csvText" rows="8" maxlength="262144" placeholder="UTF-8 CSVを貼り付け"></textarea><div class="action-row"><button id="csvPreview" class="button" type="button">プレビュー</button><button id="csvImport" class="button primary" type="button">管理者として取込</button></div><p id="csvResult" class="fine"></p></div>
+      </div><div class="wide-card settings-grid"><div><h3>支援プロファイル（訓練用）</h3><form id="profileForm"><label>対象トークン<input id="profileSubject" required maxlength="128"></label><label>確認期限<input id="profileDue" type="date" required></label><label><input id="profileMobility" type="checkbox"> 移動支援</label><label><input id="profilePower" type="checkbox"> 電源配慮</label><label><input id="profileChildren" type="checkbox"> 乳幼児あり</label><button class="button primary" type="submit">登録・更新</button></form><label>撤回する対象トークン<input id="revokeSubject" maxlength="128"></label><button id="revokeProfile" class="button danger-outline" type="button">プロファイルを撤回</button></div><div><h2>要確認候補</h2><div id="reviewQueue" class="request-list"></div></div></div>
+    </section>
+
+    <section id="panel-settings" class="panel">
+      <div class="wide-card settings-grid">
+        <div><p class="eyebrow">PILOT AREA</p><h2>初期設定</h2><dl><dt>地域</dt><dd id="regionNameSettings">設定地域</dd><dt>サインイン中の運用者</dt><dd id="settingsNode"></dd><dt>運用モード</dt><dd id="settingsProfile">確認中</dd></dl></div>
+        <div><h3>通信確認</h3><p id="healthStatus">確認中</p><h3>運用ルール</h3><ul><li>画面は避難所スタッフだけが使用</li><li>最初に確認した運用者が担当</li><li>完了・取消から30日後に詳細を削除</li><li>一般利用者は避難所を選択しない</li></ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>Relay regional deployment</span><span id="lastUpdated">—</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

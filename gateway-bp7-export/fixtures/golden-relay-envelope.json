@@ -1,0 +1,1 @@
+{"bpVersion":7,"extensionBlocks":[{"data":{"messageId":"msg-1","payloadHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","priority":"HIGH","ttl":3600},"type":"relay-envelope"}],"primaryBlock":{"destination":"dtn:external","source":"relay:gateway"}}

@@ -1,0 +1,15 @@
+{
+  "name": "relay-staff-console-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright browser E2E for the Relay PC Gateway staff/operator console. Boots the real gatewayModule + static SPA via the :pc-gateway:staffConsoleE2eServer Gradle task and drives login, the rescue request list, critical-SOS acknowledgement, and operator status changes.",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "install:browser": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}

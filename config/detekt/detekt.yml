@@ -1,0 +1,33 @@
+# Relay detekt configuration.
+# Applied on top of the detekt default config (--build-upon-default-config).
+# Existing debt is recorded in config/detekt/baseline.xml; CI fails on NEW findings only.
+
+build:
+  maxIssues: 0
+
+style:
+  ForbiddenComment:
+    active: true
+    comments:
+      - value: 'STOPSHIP'
+        reason: 'STOPSHIP markers must be resolved before merge.'
+  ForbiddenImport:
+    active: true
+    imports:
+      # Relay must never log rescue bodies, GPS coordinates, tokens, or keys.
+      # Raw android.util.Log makes accidental sensitive logging trivially easy and
+      # is currently unused in production sources; this locks that state in.
+      - value: 'android.util.Log'
+        reason: 'Use structured, redaction-aware logging instead of raw android.util.Log (rescue data / GPS / tokens must never reach logcat).'
+      - value: 'java.util.Random'
+        reason: 'Use java.security.SecureRandom for anything security-relevant; java.util.Random is never acceptable in Relay crypto/token paths.'
+
+potential-bugs:
+  ExplicitGarbageCollectionCall:
+    active: true
+
+exceptions:
+  TooGenericExceptionThrown:
+    active: true
+  PrintStackTrace:
+    active: true

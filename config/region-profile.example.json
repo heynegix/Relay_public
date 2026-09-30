@@ -1,0 +1,11 @@
+{
+  "protocolVersion": 1,
+  "regionId": "global",
+  "displayName": "Configured region",
+  "countryCode": "XX",
+  "timezoneId": "UTC",
+  "defaultLocale": "en",
+  "supportedLocales": ["en"],
+  "map": {"enabled": false, "initialLatitude": 0.0, "initialLongitude": 0.0, "initialZoom": 2, "south": -1.0, "north": 1.0, "west": -1.0, "east": 1.0, "minZoom": 0, "maxNativeZoom": 2, "maxZoom": 5, "tileTemplate": null, "attribution": "Configure a regional map provider"},
+  "officialInfo": {"enabled": false, "providerName": "Official information", "endpoint": null, "format": "JMA_BOSAI_JSON", "areaCode": null, "sources": []}
+}

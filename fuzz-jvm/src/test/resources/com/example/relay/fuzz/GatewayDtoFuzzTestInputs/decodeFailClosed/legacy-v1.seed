@@ -1,0 +1,1 @@
+{"messageId":"m","messageType":"SAFETY","recordType":"REPORT","priority":"HIGH","status":"RECEIVED","createdAt":1,"expiresAt":10,"lifetimeMs":9,"accumulatedAgeMs":0,"hopCount":0,"hopLimit":8,"originDeviceId":"origin","payload":"payload","receivedAt":1}

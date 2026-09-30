@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relay 地域災害連絡・実証ページ</title>
+<style>body{font-family:system-ui;max-width:44rem;margin:2rem auto;padding:0 1rem}label{display:block;margin:.8rem 0}input,textarea,select{width:100%;padding:.6rem;box-sizing:border-box}.choices{display:grid;gap:.5rem}.choice,button{padding:.8rem;margin:.2rem 0}.warn{background:#fff3cd;padding:1rem}.detail{margin-top:1rem}</style>
+<body><h1>地域災害連絡・実証ページ</h1>
+<p class="warn">開発・避難訓練専用です。119の代替ではなく、正式な救助受付や救助出動を保証しません。匿名の報告は本人確認されていません。</p>
+<form id="f" novalidate><div class="choices" aria-label="連絡の種類">
+<button class="choice" type="button" data-urgency="IMMEDIATE">今すぐ助けが必要</button><button class="choice" type="button" data-urgency="URGENT">けが人・動けない人がいる</button><button class="choice" type="button" data-urgency="ROUTINE">物資・移動支援が必要</button><button class="choice" type="button" data-urgency="ROUTINE">避難済み・無事を知らせる</button></div>
+<input type="hidden" name="urgency" value="URGENT"><div class="detail">
+<label>人数<input name="personCount" type="number" min="0" max="1000" value="1" required></label>
+<label><input name="injured" type="checkbox"> けが人・体調不良</label><label><input name="mobilityImpaired" type="checkbox"> 移動困難</label><label><input name="elderlyPresent" type="checkbox"> 高齢者がいる</label><label><input name="childrenPresent" type="checkbox"> 子どもがいる</label><label><input name="pregnantPresent" type="checkbox"> 妊婦がいる</label><label><input name="trapped" type="checkbox"> 閉じ込め</label><label><input name="fireOrCollapseRisk" type="checkbox"> 火災・倒壊危険</label>
+<label>おおまかな場所<input name="locationDescription" maxlength="256"></label><label>自由記述<textarea name="freeText" maxlength="2000"></textarea></label><label><input name="thirdParty" type="checkbox"> 別の人について報告する</label><button type="submit">内容を送信</button></div></form>
+<p id="out" role="status"></p>
+<script>const f=document.querySelector('#f'),out=document.querySelector('#out');document.querySelectorAll('[data-urgency]').forEach(b=>b.onclick=()=>{f.urgency.value=b.dataset.urgency;out.textContent='連絡の種類を選びました。内容を確認して送信してください。'});f.onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f));for(const n of ['injured','mobilityImpaired','elderlyPresent','childrenPresent','pregnantPresent','trapped','fireOrCollapseRisk','thirdParty'])d[n]=f.elements[n].checked;d.personCount=Number(d.personCount);try{const r=await fetch('/local-pilot/api/rescue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});const j=await r.json();out.textContent=r.ok?'このPCへ保存しました。スタッフ受領は未確認です。受付ID: '+j.receiptId:'送信できませんでした。';}catch(_){out.textContent='送信できませんでした。';}};</script>
+</body></html>
